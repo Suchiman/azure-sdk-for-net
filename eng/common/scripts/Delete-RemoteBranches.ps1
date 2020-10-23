@@ -22,7 +22,7 @@ foreach ($branch in $branches)
     $branchName = $branch.Replace("refs/heads/","")
     $head = "${RepoOwner}/${RepoName}:${branchName}"
     LogDebug "Operating on branch [ $branchName ]"
-    $pullRequests = Get-GitHubPullRequests -RepoOwner $RepoOwner -RepoName $RepoName -head $head
+    $pullRequests = Get-GitHubPullRequests -RepoOwner $RepoOwner -RepoName $RepoName -State "all" -head $head
   }
   catch
   {
@@ -30,7 +30,7 @@ foreach ($branch in $branches)
     exit 1
   }
 
-  if ($pullRequests.Count -eq 0)
+  if ($pullRequests -and ($pullRequests | ? { $_.State -eq "open" }).Count -eq 0)
   {
     LogDebug "Branch [ $branchName ] in repo [ $RepoName ] has no associated Pull Request. Deleting Branch"
     try{
