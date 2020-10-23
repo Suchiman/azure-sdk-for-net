@@ -53,6 +53,10 @@ namespace Azure.Core.TestFramework
                     {
                         throw new TestRecordingMismatchException(ex.Message, ex);
                     }
+                    catch (DirectoryNotFoundException ex)
+                    {
+                        throw new TestRecordingMismatchException(ex.Message, ex);
+                    }
                     break;
             }
         }
